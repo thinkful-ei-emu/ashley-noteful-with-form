@@ -45,11 +45,20 @@ class App extends Component {
     );
   }
 
-  deleteNote(noteId) {
+  deleteNote = (noteId) => {
     console.log('noteId in deleteNote', noteId);
-    fetch(`http://localhost:9090/notes?id=${noteId}`, {
+    fetch(`http://localhost:9090/notes/${noteId}`, {
       method: 'DELETE'
-    });
+    })
+    .then(res => {
+      if(!res.ok) {
+        throw new Error(res.statusText) 
+      }
+      let newNotes = this.state.notes.filter(note => note.id !== noteId);
+      this.setState({
+        notes: newNotes
+      });
+    })
   }
 
   renderNavRoutes() {
