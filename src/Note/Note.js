@@ -10,6 +10,7 @@ export default class Note extends React.Component {
   handleDelete = e => {
     e.preventDefault();
     this.context.deleteNote(this.props.id);
+    console.log(this.props);
     this.props.history.push("/");
   }
 

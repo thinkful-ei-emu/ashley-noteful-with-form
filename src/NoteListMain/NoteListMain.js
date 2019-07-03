@@ -19,7 +19,7 @@ export default class NoteListMain extends React.Component {
         notes,
         folderId
     );
-    console.log(this.props.history)
+    console.log("noteListMain history", this.props.history)
     return (
       <section className='NoteListMain'>
         <ul>
