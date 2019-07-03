@@ -18,19 +18,19 @@ class App extends Component {
     };
 
     componentDidMount() {
-        const url = 'http://localhost:9090/'
+        const url = 'http://localhost:9090/folders'
         fetch(url)
         .then(response => {
             if(!response.ok){
                 throw new Error (response.statusText);
             }
             return response.json();
-            //some error
         })
-        .then(
-            //set state
-        )
-        .catch(error => )
+        .then(data => {
+          console.log(data);
+        });
+            //set stat)
+        //.catch(error => )
         // fake date loading from API call
         // setTimeout(() => this.setState(dummyStore), 600);
     }
@@ -41,7 +41,9 @@ class App extends Component {
         return (
             <NoteContext.Provider value = {{
                 notes,
-                folders
+                folders,
+                findNote,
+                findFolder
             }}>
             <>
                 {['/', '/folder/:folderId'].map(path => (
@@ -59,12 +61,7 @@ class App extends Component {
                
                 <Route
                     path="/note/:noteId"
-                    render={routeProps => {
-                        const {noteId} = routeProps.match.params;
-                        const note = findNote(notes, noteId) || {};
-                        const folder = findFolder(folders, note.folderId);
-                        return <NotePageNav {...routeProps} folder={folder} />;
-                    }}
+                    component={NotePageNav}
                 />
                 <Route path="/add-folder" component={NotePageNav} />
                 <Route path="/add-note" component={NotePageNav} />
