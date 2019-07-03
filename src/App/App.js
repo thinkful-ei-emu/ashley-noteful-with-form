@@ -8,6 +8,7 @@ import NotePageMain from "../NotePageMain/NotePageMain";
 import { getNotesForFolder, findNote, findFolder } from "../notes-helpers";
 import "./App.css";
 import NoteContext from "../context/context";
+import { Redirect } from "react-router-dom";
 
 class App extends Component {
   state = {
@@ -46,20 +47,25 @@ class App extends Component {
   }
 
   deleteNote = (noteId) => {
-    console.log('noteId in deleteNote', noteId);
+    console.log("noteId in deleteNote", noteId);
     fetch(`http://localhost:9090/notes/${noteId}`, {
-      method: 'DELETE'
-    })
-    .then(res => {
-      if(!res.ok) {
-        throw new Error(res.statusText) 
+      method: "DELETE",
+      headers: {
+        "content-type": "application/json"
+      }
+    }).then(res => {
+      if (!res.ok) {
+        throw new Error(res.statusText);
       }
       let newNotes = this.state.notes.filter(note => note.id !== noteId);
-      this.setState({
-        notes: newNotes
-      });
-    })
-  }
+      this.setState(
+        {
+          notes: newNotes
+        }
+        
+      );
+    });
+  };
 
   renderNavRoutes() {
     const { notes, folders } = this.state;

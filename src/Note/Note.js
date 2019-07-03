@@ -7,10 +7,14 @@ import './Note.css'
 
 export default class Note extends React.Component {
   static contextType = NoteContext;
+  handleDelete = e => {
+    e.preventDefault();
+    this.context.deleteNote(this.props.id);
+    this.props.history.push("/");
+  }
 
   render() {
-    console.log(this.props.id);
-    const {deleteNote} = this.context;
+       
     return (
       <div className='Note'>
         <h2 className='Note__title'>
@@ -18,7 +22,7 @@ export default class Note extends React.Component {
             {this.props.name}
           </Link>
         </h2>
-        <button onClick={() => deleteNote(this.props.id)} className='Note__delete' type='button'>
+        <button onClick= {this.handleDelete}  className='Note__delete' type='button'>
           <FontAwesomeIcon icon='trash-alt' />
           {' '}
           remove
