@@ -18,7 +18,7 @@ export default class Note extends React.Component {
             {this.props.name}
           </Link>
         </h2>
-        <button onClick={()=>deleteNote(this.props.id)} className='Note__delete' type='button'>
+        <button onClick={() => deleteNote(this.props.id)} className='Note__delete' type='button'>
           <FontAwesomeIcon icon='trash-alt' />
           {' '}
           remove
