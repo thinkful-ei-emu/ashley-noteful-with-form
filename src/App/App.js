@@ -9,6 +9,7 @@ import { getNotesForFolder, findNote, findFolder } from "../notes-helpers";
 import "./App.css";
 import NoteContext from "../context/context";
 import { Redirect } from "react-router-dom";
+import AddFolder from "../AddFolder";
 
 class App extends Component {
   state = {
@@ -23,7 +24,7 @@ class App extends Component {
     };
     Promise.all(
       Object.keys(urls).map(key => {
-        console.log(key);
+        // console.log(key);
         fetch(urls[key])
           .then(response => {
             console.log(response);
@@ -47,7 +48,7 @@ class App extends Component {
   }
 
   deleteNote = (noteId) => {
-    console.log("noteId in deleteNote", noteId);
+    // console.log("noteId in deleteNote", noteId);
     fetch(`http://localhost:9090/notes/${noteId}`, {
       method: "DELETE",
       headers: {
@@ -68,13 +69,13 @@ class App extends Component {
   };
 
   addFolder = (folder) => {
-    console.log(folderName)
-  
-    fetch(`http://localhost:9090/notes/folders`, {
+      
+    fetch(`http://localhost:9090/folders`, {
       method: "POST",
       headers: {
         "content-type": "application/json"
-      }
+      },
+      body: JSON.stringify(folder),
     }).then(res => {
       if (!res.ok) {
         throw new Error(res.statusText);
@@ -91,7 +92,7 @@ class App extends Component {
 
   renderNavRoutes() {
     const { notes, folders } = this.state;
-    console.log(notes, folders);
+    // console.log(notes, folders);
 
     return (
       <NoteContext.Provider
@@ -100,7 +101,8 @@ class App extends Component {
           folders,
           findNote,
           findFolder,
-          addFolder
+          addFolder: this.addFolder
+         
         }}
       >
         <>
@@ -109,7 +111,7 @@ class App extends Component {
           ))}
 
           <Route path="/note/:noteId" component={NotePageNav} />
-          <Route path="/add-folder" component={NotePageNav} />
+          <Route path="/add-folder" component={AddFolder} />
           <Route path="/add-note" component={NotePageNav} />
         </>
       </NoteContext.Provider>
@@ -132,7 +134,7 @@ class App extends Component {
           findNote: (notes = [], noteId) =>
             notes.find(note => note.id === noteId),
           deleteNote: this.deleteNote,
-          addFolder: this.addFolder
+          
         }}
       >
         <>
