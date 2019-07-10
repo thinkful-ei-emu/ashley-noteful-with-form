@@ -5,11 +5,12 @@ import NoteListNav from "../NoteListNav/NoteListNav";
 import NotePageNav from "../NotePageNav/NotePageNav";
 import NoteListMain from "../NoteListMain/NoteListMain";
 import NotePageMain from "../NotePageMain/NotePageMain";
-import { getNotesForFolder, findNote, findFolder } from "../notes-helpers";
+// import { getNotesForFolder, findNote, findFolder } from "../notes-helpers";
 import "./App.css";
 import NoteContext from "../context/context";
-import { Redirect } from "react-router-dom";
+
 import AddFolder from "../AddFolder";
+import AddNote from "../AddNote";
 
 class App extends Component {
   state = {
@@ -68,26 +69,24 @@ class App extends Component {
     });
   };
 
-  addFolder = (folder) => {
-      
-    fetch(`http://localhost:9090/folders`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json"
-      },
-      body: JSON.stringify(folder),
-    }).then(res => {
-      if (!res.ok) {
-        throw new Error(res.statusText);
-      }
-      
+  addNote = (note) => {
+      console.log('addnote', note);
       this.setState(
         {
-          folders: [...this.state.folders, folder]
+          notes: [...this.state.notes, note]
         }
-        
-      );
-    });
+      );   
+  };
+  
+
+  addFolder = (folder) => {
+    this.setState(
+      {
+        folders: [...this.state.folders, folder]
+      }
+      
+    );
+
   };
 
   renderNavRoutes() {
@@ -99,10 +98,12 @@ class App extends Component {
         value={{
           notes,
           folders,
-          findNote,
-          findFolder,
-          addFolder: this.addFolder
-         
+          findFolder: (folders = [], folderId) =>
+          folders.find(folder => folder.id === folderId),
+          findNote: (notes = [], noteId) =>
+          notes.find(note => note.id === noteId),
+          addFolder: this.addFolder,
+          addNote: this.addNote         
         }}
       >
         <>
@@ -112,7 +113,7 @@ class App extends Component {
 
           <Route path="/note/:noteId" component={NotePageNav} />
           <Route path="/add-folder" component={AddFolder} />
-          <Route path="/add-note" component={NotePageNav} />
+          <Route path="/add-note" component={AddNote} />
         </>
       </NoteContext.Provider>
     );

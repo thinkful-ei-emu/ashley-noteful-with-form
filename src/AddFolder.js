@@ -9,10 +9,28 @@ class AddFolder extends React.Component {
   handleSubmit = event => {   
     event.preventDefault();
     const folder = {name: event.target['folder-name'].value}
-    this.context.addFolder(folder);    
-    this.props.history.push("/");
+       
+    // this.props.history.push("/");
+    fetch(`http://localhost:9090/folders`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json"
+      },
+      body: JSON.stringify(folder),
+    }).then(res => {
+      if (!res.ok) {
+        throw new Error(res.statusText);
+      } 
+      return res.json()
+      
+    }).then(folder => {
+      this.context.addFolder(folder);
+      this.props.history.push(`/`) 
+    }).catch(error =>
+      error(error.message));  
 
   }
+  
 
 
   render() {    
@@ -26,8 +44,9 @@ class AddFolder extends React.Component {
             type="text"
             name="folder-name"
             id="folder-name-input" 
+            required
            />
-        </label>        
+        </label>              
         <button type='submit'>
           Add Folder
         </button>

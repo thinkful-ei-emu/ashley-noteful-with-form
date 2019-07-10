@@ -8,7 +8,8 @@ const NoteContext = React.createContext({
   findFolder: () => {},
   countNotesForFolder: () => {},
   deleteNote: () => {},
-  addFolder: () => {}
+  addFolder: () => {},
+  addNote: () => {}
 });
 
 export default NoteContext;
