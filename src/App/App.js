@@ -67,6 +67,28 @@ class App extends Component {
     });
   };
 
+  addFolder = (folder) => {
+    console.log(folderName)
+  
+    fetch(`http://localhost:9090/notes/folders`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json"
+      }
+    }).then(res => {
+      if (!res.ok) {
+        throw new Error(res.statusText);
+      }
+      
+      this.setState(
+        {
+          folders: [...this.state.folders, folder]
+        }
+        
+      );
+    });
+  };
+
   renderNavRoutes() {
     const { notes, folders } = this.state;
     console.log(notes, folders);
@@ -77,7 +99,8 @@ class App extends Component {
           notes,
           folders,
           findNote,
-          findFolder
+          findFolder,
+          addFolder
         }}
       >
         <>
@@ -108,7 +131,8 @@ class App extends Component {
             folders.find(folder => folder.id === folderId),
           findNote: (notes = [], noteId) =>
             notes.find(note => note.id === noteId),
-          deleteNote: this.deleteNote
+          deleteNote: this.deleteNote,
+          addFolder: this.addFolder
         }}
       >
         <>
