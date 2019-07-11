@@ -4,6 +4,7 @@ import { format } from 'date-fns'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import NoteContext from "../context/context";
 import './Note.css'
+import ErrorBoundries from "../ErrorBoundries"
 
 export default class Note extends React.Component {
   static contextType = NoteContext;
@@ -18,7 +19,8 @@ export default class Note extends React.Component {
        
     return (
       <div className='Note'>
-        <h2 className='Note__title'>
+            <ErrorBoundries>
+        <h2 className='Note__title'>      
           <Link to={`/note/${this.props.id}`}>
             {this.props.name}
           </Link>
@@ -37,6 +39,7 @@ export default class Note extends React.Component {
             </span>
           </div>
         </div>
+        </ErrorBoundries>
       </div>
     )
   }
