@@ -22,7 +22,7 @@ export default class NoteListMain extends React.Component {
     );
   
     return (
-      <section className='NoteListMain'>
+      <section className='NoteListMain'>     
         <ul>
           {notesForFolder.map(note =>
             <li key={note.id}>
@@ -46,7 +46,7 @@ export default class NoteListMain extends React.Component {
             <br />
             Note
           </CircleButton>
-        </div>
+        </div>      
       </section>
     )
   }

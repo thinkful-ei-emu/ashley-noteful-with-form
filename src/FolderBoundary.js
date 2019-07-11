@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default class ErrorBoundries extends React.Component {
+export default class FolderBoundry extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -13,7 +13,7 @@ export default class ErrorBoundries extends React.Component {
   render() {
     if (this.state.hasError) {      
       return (
-        <h2>Could not display this note.</h2>
+        <h2>Something went wrong: could not display folders.</h2>
       );
     }
     return this.props.children;

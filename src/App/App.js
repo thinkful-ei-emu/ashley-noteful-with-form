@@ -5,6 +5,8 @@ import NoteListNav from "../NoteListNav/NoteListNav";
 import NotePageNav from "../NotePageNav/NotePageNav";
 import NoteListMain from "../NoteListMain/NoteListMain";
 import NotePageMain from "../NotePageMain/NotePageMain";
+import FolderBoundary from "../FolderBoundary";
+import NoteBoundary from "../NoteBoundary";
 
 import "./App.css";
 import NoteContext from "../context/context";
@@ -25,10 +27,8 @@ class App extends Component {
     };
     Promise.all(
       Object.keys(urls).map(key => {
-        // console.log(key);
         fetch(urls[key])
           .then(response => {
-         
             if (!response.ok) {
               throw new Error(response.statusText);
             }
@@ -46,49 +46,36 @@ class App extends Component {
           });
       })
     );
-  }
+  };
 
-  deleteNote = (noteId) => {
-         
+  deleteNote = noteId => {
     let newNotes = this.state.notes.filter(note => note.id !== noteId);
-    this.setState(
-      {
-        notes: newNotes
-      }
-      
-    );
+    this.setState({
+      notes: newNotes
+    });
     fetch(`http://localhost:9090/notes/${noteId}`, {
       method: "DELETE",
       headers: {
         "content-type": "application/json"
       }
-    })
-    
+    });
   };
 
-  addNote = (note) => {
-      console.log('addnote', note);
-      this.setState(
-        {
-          notes: [...this.state.notes, note]
-        }
-      );   
+  addNote = note => {
+    console.log("addnote", note);
+    this.setState({
+      notes: [...this.state.notes, note]
+    });
   };
-  
 
-  addFolder = (folder) => {
-    this.setState(
-      {
-        folders: [...this.state.folders, folder]
-      }
-      
-    );
-
+  addFolder = folder => {
+    this.setState({
+      folders: [...this.state.folders, folder]
+    });
   };
 
   renderNavRoutes() {
     const { notes, folders } = this.state;
-    // console.log(notes, folders);
 
     return (
       <NoteContext.Provider
@@ -96,11 +83,11 @@ class App extends Component {
           notes,
           folders,
           findFolder: (folders = [], folderId) =>
-          folders.find(folder => folder.id === folderId),
+            folders.find(folder => folder.id === folderId),
           findNote: (notes = [], noteId) =>
-          notes.find(note => note.id === noteId),
+            notes.find(note => note.id === noteId),
           addFolder: this.addFolder,
-          addNote: this.addNote         
+          addNote: this.addNote
         }}
       >
         <>
@@ -131,8 +118,7 @@ class App extends Component {
             folders.find(folder => folder.id === folderId),
           findNote: (notes = [], noteId) =>
             notes.find(note => note.id === noteId),
-          deleteNote: this.deleteNote,
-          
+          deleteNote: this.deleteNote
         }}
       >
         <>
@@ -148,13 +134,17 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <nav className="App__nav">{this.renderNavRoutes()}</nav>
+        <FolderBoundary>
+          <nav className="App__nav">{this.renderNavRoutes()}</nav>
+        </FolderBoundary>
         <header className="App__header">
           <h1>
             <Link to="/">Noteful</Link> <FontAwesomeIcon icon="check-double" />
           </h1>
         </header>
-        <main className="App__main">{this.renderMainRoutes()}</main>
+        <NoteBoundary>
+          <main className="App__main">{this.renderMainRoutes()}</main>
+        </NoteBoundary>
       </div>
     );
   }

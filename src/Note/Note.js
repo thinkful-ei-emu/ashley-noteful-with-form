@@ -4,7 +4,7 @@ import { format } from 'date-fns'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import NoteContext from "../context/context";
 import './Note.css'
-import ErrorBoundries from "../ErrorBoundries";
+import ErrorBoundries from "../FolderBoundary";
 import PropTypes from 'prop-types';
 
 export default class Note extends React.Component {
