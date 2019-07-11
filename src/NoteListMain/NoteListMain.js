@@ -7,6 +7,7 @@ import './NoteListMain.css'
 import NoteContext from '../context/context';
 
 
+
 export default class NoteListMain extends React.Component {
  
    static contextType= NoteContext;
@@ -19,7 +20,7 @@ export default class NoteListMain extends React.Component {
         notes,
         folderId
     );
-    console.log("noteListMain history", this.props.history)
+  
     return (
       <section className='NoteListMain'>
         <ul>
@@ -51,5 +52,7 @@ export default class NoteListMain extends React.Component {
   }
   
   }
+
+
   
   

@@ -5,7 +5,7 @@ import NoteListNav from "../NoteListNav/NoteListNav";
 import NotePageNav from "../NotePageNav/NotePageNav";
 import NoteListMain from "../NoteListMain/NoteListMain";
 import NotePageMain from "../NotePageMain/NotePageMain";
-import ErrorBoundries from "../ErrorBoundries";
+
 import "./App.css";
 import NoteContext from "../context/context";
 
@@ -18,7 +18,7 @@ class App extends Component {
     folders: []
   };
 
-  componentDidMount() {
+  componentDidMount = () => {
     const urls = {
       folders: "http://localhost:9090/folders",
       notes: "http://localhost:9090/notes"
@@ -28,7 +28,7 @@ class App extends Component {
         // console.log(key);
         fetch(urls[key])
           .then(response => {
-            console.log(response);
+         
             if (!response.ok) {
               throw new Error(response.statusText);
             }
@@ -49,24 +49,21 @@ class App extends Component {
   }
 
   deleteNote = (noteId) => {
-    // console.log("noteId in deleteNote", noteId);
+         
+    let newNotes = this.state.notes.filter(note => note.id !== noteId);
+    this.setState(
+      {
+        notes: newNotes
+      }
+      
+    );
     fetch(`http://localhost:9090/notes/${noteId}`, {
       method: "DELETE",
       headers: {
         "content-type": "application/json"
       }
-    }).then(res => {
-      if (!res.ok) {
-        throw new Error(res.statusText);
-      }
-      let newNotes = this.state.notes.filter(note => note.id !== noteId);
-      this.setState(
-        {
-          notes: newNotes
-        }
-        
-      );
-    });
+    })
+    
   };
 
   addNote = (note) => {

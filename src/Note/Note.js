@@ -4,14 +4,14 @@ import { format } from 'date-fns'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import NoteContext from "../context/context";
 import './Note.css'
-import ErrorBoundries from "../ErrorBoundries"
+import ErrorBoundries from "../ErrorBoundries";
+import PropTypes from 'prop-types';
 
 export default class Note extends React.Component {
   static contextType = NoteContext;
   handleDelete = e => {
     e.preventDefault();
-    this.context.deleteNote(this.props.id);
-    console.log(this.props);
+    this.context.deleteNote(this.props.id);  
     this.props.history.push("/");
   }
 
@@ -43,5 +43,12 @@ export default class Note extends React.Component {
       </div>
     )
   }
-
 }
+Note.propTypes = {  
+  name: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,  
+  
+}
+
+ 
+  

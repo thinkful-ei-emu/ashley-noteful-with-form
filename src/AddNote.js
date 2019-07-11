@@ -2,7 +2,8 @@ import React from "react";
 import NoteContext from "./context/context";
 import NotefulForm from "./NotefulForm/NotefulForm";
 
-class AddNote extends React.Component {
+
+export default class AddNote extends React.Component {
   static contextType = NoteContext;
 
   handleSubmit = event => {
@@ -44,7 +45,7 @@ class AddNote extends React.Component {
         <label>Note Name:</label>
         <input type="text" name="note-name" id="note-name-input" required />
         <label>Content:</label>
-        <textarea type="text" name="note-content" id="note-content-textarea" required />
+        <textarea type="text" name="note-content" id="note-content-textarea" />
         <select id="note-folder-select" name="note-folder-id">
           <option value={null}>Select a Folder</option>
           {folders.map(folder => (
@@ -57,4 +58,5 @@ class AddNote extends React.Component {
   }
 }
 
-export default AddNote;
+
+
