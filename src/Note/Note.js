@@ -4,7 +4,6 @@ import { format } from 'date-fns'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import NoteContext from "../context/context";
 import './Note.css'
-import ErrorBoundries from "../FolderBoundary";
 import PropTypes from 'prop-types';
 
 export default class Note extends React.Component {
@@ -18,8 +17,7 @@ export default class Note extends React.Component {
   render() {
        
     return (
-      <div className='Note'>
-            <ErrorBoundries>
+      <div className='Note'>           
         <h2 className='Note__title'>      
           <Link to={`/note/${this.props.id}`}>
             {this.props.name}
@@ -38,8 +36,7 @@ export default class Note extends React.Component {
               {format(this.props.modified, 'Do MMM YYYY')}
             </span>
           </div>
-        </div>
-        </ErrorBoundries>
+        </div>      
       </div>
     )
   }
