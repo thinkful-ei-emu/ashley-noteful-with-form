@@ -22,8 +22,8 @@ class App extends Component {
   componentDidMount = () => {
     
     const urls = {
-      folders: `${config.API_ENDPOINT}/api/folders`,
-      notes: `${config.API_ENDPOINT}/api/notes`
+      folders: `${config.API_ENDPOINT}api/folders`,
+      notes: `${config.API_ENDPOINT}api/notes`
     };
     Promise.all(
       Object.keys(urls).map(key => {
@@ -54,7 +54,7 @@ class App extends Component {
     this.setState({
       notes: newNotes
     });
-    fetch(`${config.API_ENDPOINT}/api/notes/${noteId}`, {
+    fetch(`${config.API_ENDPOINT}api/notes/${noteId}`, {
       method: "DELETE",
       headers: {
         "content-type": "application/json"
