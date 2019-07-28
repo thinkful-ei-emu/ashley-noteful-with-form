@@ -1,6 +1,7 @@
 import React from "react";
 import NoteContext from "./context/context";
 import NotefulForm from "./NotefulForm/NotefulForm";
+import config from './config'
 
 
 export default class AddNote extends React.Component {
@@ -14,7 +15,7 @@ export default class AddNote extends React.Component {
       content: event.target["note-content"].value,
       modified: new Date (),
     };
-    fetch(`http://localhost:8000/api/notes`, {
+    fetch(`${config.API_ENDPOINT}/notes`, {
       method: "POST",
       headers: {
         "content-type": "application/json"

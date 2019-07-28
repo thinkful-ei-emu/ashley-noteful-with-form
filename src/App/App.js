@@ -11,6 +11,7 @@ import "./App.css";
 import NoteContext from "../context/context";
 import AddFolder from "../AddFolder";
 import AddNote from "../AddNote";
+import config from '../config'
 
 class App extends Component {
   state = {
@@ -21,8 +22,8 @@ class App extends Component {
   componentDidMount = () => {
     
     const urls = {
-      folders: "http://localhost:8000/api/folders",
-      notes: "http://localhost:8000/api/notes"
+      folders: `${config.API_ENDPOINT}/folders`,
+      notes: `${config.API_ENDPOINT}/notes`
     };
     Promise.all(
       Object.keys(urls).map(key => {
@@ -53,7 +54,7 @@ class App extends Component {
     this.setState({
       notes: newNotes
     });
-    fetch(`http://localhost:8000/api/notes/${noteId}`, {
+    fetch(`${config.API_ENDPOINT}/notes/${noteId}`, {
       method: "DELETE",
       headers: {
         "content-type": "application/json"
