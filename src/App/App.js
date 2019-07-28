@@ -20,28 +20,32 @@ class App extends Component {
 
   componentDidMount = () => {
     
-    Promise.all([
-      fetch("http://localhost:8000/api/folders"),
-      fetch("http://localhost:8000/api/notes")
-    ])
-    .then(([notesRes, foldersRes]) => {
-      if (!notesRes.ok)
-        return notesRes.json().then(e => Promise.reject(e))
-      if (!foldersRes.ok)
-        return foldersRes.json().then(e => Promise.reject(e))
-
-      return Promise.all([
-        notesRes.json(),
-        foldersRes.json(),
-      ])
-    })
-    .then(([notes, folders]) => {
-      this.setState({ notes, folders })
-    })
-    .catch(error => {
-      console.error({ error })
-    })
-  }
+    const urls = {
+      folders: "http://localhost:8000/api/folders",
+      notes: "http://localhost:8000/api/notes"
+    };
+    Promise.all(
+      Object.keys(urls).map(key => {
+        fetch(urls[key])
+          .then(response => {
+            if (!response.ok) {
+              throw new Error(response.statusText);
+            }
+            return response.json();
+          })
+          .then(data => {
+            this.setState({
+              [key]: data
+            });
+          })
+          .catch(error => {
+            this.setState({
+              error: error.message
+            });
+          });
+      })
+    );
+  };
   
 
   deleteNote = noteId => {
@@ -79,11 +83,12 @@ class App extends Component {
           notes,
           folders,
           findFolder: (folders = [], folderId) =>
-            folders.find(folder => folder.id === folderId),
+            folders.find(folder => folder.id == folderId),
           findNote: (notes = [], noteId) =>
-            notes.find(note => note.id === noteId),
+            notes.find(note => note.id == noteId),
           addFolder: this.addFolder,
-          addNote: this.addNote
+          addNote: this.addNote,         
+          countNotesForFolder:  (notes=[], folderId) => notes.filter(note => note.folder_id == folderId).length
         }}
       >
         <>
@@ -109,11 +114,11 @@ class App extends Component {
           getNotesForFolder: (notes = [], folderId) =>
             !folderId
               ? notes
-              : notes.filter(note => note.folderId === folderId),
+              : notes.filter(note => note.folder_id == folderId),
           findFolder: (folders = [], folderId) =>
-            folders.find(folder => folder.id === folderId),
+            folders.find(folder => folder.id == folderId),
           findNote: (notes = [], noteId) =>
-            notes.find(note => note.id === noteId),
+            notes.find(note => note.id == noteId),
           deleteNote: this.deleteNote
         }}
       >

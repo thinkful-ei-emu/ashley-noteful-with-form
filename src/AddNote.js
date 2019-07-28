@@ -38,6 +38,7 @@ export default class AddNote extends React.Component {
 
   render() {
     const { folders } = this.context;
+    
 
     return (
       <NotefulForm onSubmit={this.handleSubmit}>
