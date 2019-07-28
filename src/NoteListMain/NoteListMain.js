@@ -20,7 +20,8 @@ export default class NoteListMain extends React.Component {
         notes,
         folderId
     );
-  
+
+      
     return (
       <section className='NoteListMain'>     
         <ul>

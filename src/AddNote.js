@@ -10,11 +10,11 @@ export default class AddNote extends React.Component {
     event.preventDefault();
     const note = {
       name: event.target["note-name"].value,
-      folderId: event.target["note-folder-id"].value,
+      folder_id: event.target["note-folder-id"].value,
       content: event.target["note-content"].value,
       modified: new Date (),
     };
-    fetch(`http://localhost:9090/notes`, {
+    fetch(`http://localhost:8000/api/notes`, {
       method: "POST",
       headers: {
         "content-type": "application/json"

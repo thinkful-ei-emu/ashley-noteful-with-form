@@ -12,7 +12,7 @@ export default class NotePageMain extends React.Component {
     const { noteId } = this.props.match.params;
     const note = findNote(notes, noteId);
 
-    if (!note) {
+    if (!note) {      
       return <p>loading</p>;
     }
 

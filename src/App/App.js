@@ -7,10 +7,8 @@ import NoteListMain from "../NoteListMain/NoteListMain";
 import NotePageMain from "../NotePageMain/NotePageMain";
 import FolderBoundary from "../FolderBoundary";
 import NoteBoundary from "../NoteBoundary";
-
 import "./App.css";
 import NoteContext from "../context/context";
-
 import AddFolder from "../AddFolder";
 import AddNote from "../AddNote";
 
@@ -21,39 +19,37 @@ class App extends Component {
   };
 
   componentDidMount = () => {
-    const urls = {
-      folders: "http://localhost:9090/folders",
-      notes: "http://localhost:9090/notes"
-    };
-    Promise.all(
-      Object.keys(urls).map(key => {
-        fetch(urls[key])
-          .then(response => {
-            if (!response.ok) {
-              throw new Error(response.statusText);
-            }
-            return response.json();
-          })
-          .then(data => {
-            this.setState({
-              [key]: data
-            });
-          })
-          .catch(error => {
-            this.setState({
-              error: error.message
-            });
-          });
-      })
-    );
-  };
+    
+    Promise.all([
+      fetch("http://localhost:8000/api/folders"),
+      fetch("http://localhost:8000/api/notes")
+    ])
+    .then(([notesRes, foldersRes]) => {
+      if (!notesRes.ok)
+        return notesRes.json().then(e => Promise.reject(e))
+      if (!foldersRes.ok)
+        return foldersRes.json().then(e => Promise.reject(e))
+
+      return Promise.all([
+        notesRes.json(),
+        foldersRes.json(),
+      ])
+    })
+    .then(([notes, folders]) => {
+      this.setState({ notes, folders })
+    })
+    .catch(error => {
+      console.error({ error })
+    })
+  }
+  
 
   deleteNote = noteId => {
     let newNotes = this.state.notes.filter(note => note.id !== noteId);
     this.setState({
       notes: newNotes
     });
-    fetch(`http://localhost:9090/notes/${noteId}`, {
+    fetch(`http://localhost:8000/api/notes/${noteId}`, {
       method: "DELETE",
       headers: {
         "content-type": "application/json"
